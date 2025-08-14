@@ -11,6 +11,10 @@ export function shuffleArray(array) {
   }
 }
 
+export function getModuleTitle(id) {
+  return game.modules.get(id)?.title;
+}
+
 export function oxfordList(list, { and = "and" } = {}) {
   if (list instanceof Set) list = Array.from(list);
   list = (Array.isArray(list) ? list : [list]).filter((e) => !!e).map((e) => String(e));
