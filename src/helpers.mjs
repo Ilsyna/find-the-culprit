@@ -28,6 +28,6 @@ export function oxfordList(list, { and = "and" } = {}) {
 
 export function activeRealGM() {
   const activeRealGMs = game.users.filter((u) => u.active && u.role === CONST.USER_ROLES.GAMEMASTER);
-  activeRealGMs.sort((a, b) => (a.id > b.id ? 1 : -1));
+  activeRealGMs.sort((a, b) => a.id.localeCompare(b.id));
   return activeRealGMs[0] || null;
 }
