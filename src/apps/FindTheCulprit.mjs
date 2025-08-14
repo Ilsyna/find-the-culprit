@@ -1,6 +1,6 @@
 import { MODULE, MODULE_ID, MMSetting } from "../constants.mjs";
 import { FindTheCulpritModuleData } from "../data/models.mjs";
-import { debug, oxfordList, shuffleArray } from "../helpers.mjs";
+import { debug, oxfordList, shuffleArray, getModuleTitle } from "../helpers.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin, DialogV2 } = foundry.applications.api;
 const standardWidth = 425;
 
@@ -864,9 +864,14 @@ export class FindTheCulprit extends HandlebarsApplicationMixin(ApplicationV2) {
       ),
     };
     for (const group in templateContext.groups) {
-      templateContext.groups[group].sort((a, b) =>
-        game.modules.get(a.id).title.localeCompare(game.modules.get(b.id).title)
-      );
+      templateContext.groups[group].sort((a, b) => {
+        const titleA = getModuleTitle(a.id);
+        const titleB = getModuleTitle(b.id);
+        if (typeof titleA === "string" && typeof titleB === "string") {
+          return titleA.localeCompare(titleB);
+        }
+        return a.id.localeCompare(b.id);
+      });
     }
     const titleKey = `FindTheCulprit.BinarySearchStep.${isConfirmStep ? "ConfirmStep" : ""}Title`;
     const dialogOptions = this.#defaultDialogOptions({
